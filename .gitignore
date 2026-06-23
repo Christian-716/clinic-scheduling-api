@@ -1,0 +1,17 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Claude Code
+CLAUDE.md
+
+## Secrets
+appsettings.json
+appsettings.Development.json
+
+## Rider / Resharper
+.idea/
+*.DotSettings.user

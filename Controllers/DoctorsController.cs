@@ -18,6 +18,21 @@ public class DoctorsController : ControllerBase
     public async Task<ActionResult<List<DoctorDto>>> GetAll() =>
         Ok(await _doctors.GetAllAsync());
 
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DoctorDto>> GetById(int id) =>
+        Ok(await _doctors.GetByIdAsync(id));
+
+    [Authorize]
+    [HttpGet("{id}/appointments")]
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointments(int id) =>
+        Ok(await _doctors.GetAppointmentsAsync(id));
+
+    [Authorize]
+    [HttpGet("{id}/patients")]
+    public async Task<ActionResult<List<PatientDto>>> GetPatients(int id) =>
+        Ok(await _doctors.GetPatientsAsync(id));
+
     [Authorize]
     [HttpPost]
     public async Task<ActionResult<DoctorDto>> Create(CreateDoctorRequest request) =>

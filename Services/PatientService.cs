@@ -22,6 +22,33 @@ public class PatientService
         return ToDto(patient);
     }
 
+    public async Task<List<AppointmentDto>> GetAppointmentsAsync(int id)
+    {
+        if (!await _db.Patients.AnyAsync(p => p.Id == id))
+            throw new NotFoundException($"Patient {id} not found.");
+
+        return await _db.Appointments
+            .Where(a => a.PatientId == id)
+            .Include(a => a.Patient)
+            .Include(a => a.Doctor)
+            .Select(a => ToAppointmentDto(a))
+            .ToListAsync();
+    }
+
+    public async Task<List<DoctorDto>> GetDoctorsAsync(int id)
+    {
+        if (!await _db.Patients.AnyAsync(p => p.Id == id))
+            throw new NotFoundException($"Patient {id} not found.");
+
+        return await _db.Appointments
+            .Where(a => a.PatientId == id)
+            .Include(a => a.Doctor)
+            .Select(a => a.Doctor)
+            .Distinct()
+            .Select(d => ToDoctorDto(d))
+            .ToListAsync();
+    }
+
     public async Task<PatientDto> CreateAsync(CreatePatientRequest request)
     {
         var patient = new Patient
@@ -65,5 +92,24 @@ public class PatientService
         DateOfBirth = p.DateOfBirth,
         Email = p.Email,
         Phone = p.Phone
+    };
+
+    private static DoctorDto ToDoctorDto(Doctor d) => new()
+    {
+        Id = d.Id,
+        FullName = d.FullName,
+        Specialty = d.Specialty
+    };
+
+    private static AppointmentDto ToAppointmentDto(Appointment a) => new()
+    {
+        Id = a.Id,
+        PatientId = a.PatientId,
+        PatientName = a.Patient.FullName,
+        DoctorId = a.DoctorId,
+        DoctorName = a.Doctor.FullName,
+        ScheduledAt = a.ScheduledAt,
+        Status = a.Status,
+        Notes = a.Notes
     };
 }

@@ -16,13 +16,13 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Appointment>()
             .HasOne(a => a.Patient)
-            .WithMany()
+            .WithMany(p => p.Appointments)
             .HasForeignKey(a => a.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Appointment>()
             .HasOne(a => a.Doctor)
-            .WithMany()
+            .WithMany(d => d.Appointments)
             .HasForeignKey(a => a.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 

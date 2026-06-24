@@ -22,6 +22,14 @@ public class PatientsController : ControllerBase
     public async Task<ActionResult<PatientDto>> GetById(int id) =>
         Ok(await _patients.GetByIdAsync(id));
 
+    [HttpGet("{id}/appointments")]
+    public async Task<ActionResult<List<AppointmentDto>>> GetAppointments(int id) =>
+        Ok(await _patients.GetAppointmentsAsync(id));
+
+    [HttpGet("{id}/doctors")]
+    public async Task<ActionResult<List<DoctorDto>>> GetDoctors(int id) =>
+        Ok(await _patients.GetDoctorsAsync(id));
+
     [HttpPost]
     public async Task<ActionResult<PatientDto>> Create(CreatePatientRequest request)
     {

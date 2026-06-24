@@ -78,6 +78,8 @@ The database schema is created automatically on first startup via `db.Database.M
 | GET | `/api/patients` | List all patients |
 | POST | `/api/patients` | Create a patient |
 | GET | `/api/patients/{id}` | Get patient by ID |
+| GET | `/api/patients/{id}/appointments` | All appointments for this patient |
+| GET | `/api/patients/{id}/doctors` | All unique doctors seen by this patient |
 | PUT | `/api/patients/{id}` | Update patient |
 | DELETE | `/api/patients/{id}` | Delete patient |
 
@@ -98,6 +100,9 @@ The database schema is created automatically on first startup via `db.Database.M
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
 | GET | `/api/doctors` | No | List all doctors |
+| GET | `/api/doctors/{id}` | No | Get doctor by ID |
+| GET | `/api/doctors/{id}/appointments` | JWT | All appointments for this doctor |
+| GET | `/api/doctors/{id}/patients` | JWT | All unique patients seen by this doctor |
 | POST | `/api/doctors` | JWT | Create a doctor |
 
 **Doctor body:**
